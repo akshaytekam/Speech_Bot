@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>speech bot</title>
+    <style>
+        /* Center the container element (div) */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* border: 2px solid red; */
+        }
+
+        /* Style for the centered element (h1) */
+        .centered-element {
+            background-color: lightblue;
+            padding: 20px;
+        }
+
+        /* CSS for the button */
+.button {
+  /* Background color */
+  background-color: #0066cc;
+
+  /* Text color */
+  color: #ffffff;
+
+  /* Border */
+  border: none;
+  /* If you want a border, you can set it like this:
+  border: 1px solid #0066cc;
+  */
+
+  /* Border radius to round the corners */
+  border-radius: 5px;
+
+  /* Width and height */
+  width: 150px;
+  height: 40px;
+
+  /* Center the text within the button */
+  text-align: center;
+
+  /* Font properties */
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+
+  /* Optional: Add some padding for a better visual appearance */
+  padding: 8px 16px;
+}
+
+.iframe-container {
+    background-color: rgb(215, 189, 239);
+    border: 2px solid rgb(167, 24, 24);
+}
+    </style>
+</head>
+<body style="background-color: lightblue;">
+    <div class="center-container" style="font-weight: bold; font-size: 26px;">Generate Automated HTML Elements by Speech Recognition</div>
+    <div class="center-container">
+        <div id="speechContainer" class="centered-element">
+            <button class="button" id="myButton" onclick="saySomething()" type="button">Speak in Mic</button>
+        </div><br>
+    </div>
+    <div class="center-container">
+        <div id="myDiv"></div>
+        <!-- {% if file_generated_done == True %} -->
+            <div id="status">Done, Download now</div>
+        <!-- {% endif %} -->
+    </div>
+
+    <div class="center-container">
+        <div class="centered-element">
+            <a href="{{ url_for('.download_html') }}">Download</a>
+        </div>
+    </div>
+    <!-- Notes and commands section -->
+    <div class="center-container" style="margin-top: 60px; font-size: 26px;">
+        Commands to Say in Mic<span style="font-size: 16px;">&nbsp;&nbsp;(Click button to say next commands)</span>
+    </div>
+    <div class="iframe-container">
+        <p class="center-container">For Heading say: Heading</p>
+        <p class="center-container">For Paragraph say: Paragraph</p>
+        <p class="center-container">For Button say: Button</p>
+        <p class="center-container">For Menu Bar say: Menu</p>
+    </div>
+
+    <script>
+
+        document.getElementById("myButton").addEventListener("click", function() {
+            
+            // Send a POST request to the Flask server when the button is clicked
+            fetch("/button_clicked", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"buttonClicked": true})
+            });
+        });
+
+
+        var isDivCreated = false;
+        function saySomething() {
+            if (!isDivCreated) {
+            // Create a new <div> element
+            var newDiv = document.createElement("div");
+
+            // Set the content and style of the <div> element
+            newDiv.innerText = "Say Something....Listening...";
+            newDiv.style.backgroundColor = "lightblue";
+            newDiv.style.padding = "10px";
+            newDiv.style.marginTop = "10px";
+
+            // // Get the reference to the parent element (where you want to append the new div)
+            var parentElement = document.getElementById("myDiv");
+
+            // // Append the new <div> element to the parent element
+            parentElement.appendChild(newDiv);
+            isDivCreated = true; // Set the flag to true to indicate the div is created
+            }
+        }
+    </script>
+</body>
+</html>
